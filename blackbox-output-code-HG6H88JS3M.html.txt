@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Girlfriend?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ffb6c1, #ff69b4);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            font-family: 'Courier New', monospace;
+            color: #ff1493;
+        }
+        button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ff1493;
+        }
+        #noButton {
+            position: absolute;
+            transition: none; /* Disable smooth transition for teleport effect */
+        }
+        input, select {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        .image-option {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        .image-option img {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .image-option input[type="radio"]:checked + img {
+            border-color: #ff1493;
+        }
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff69b4;
+            pointer-events: none;
+            animation: float 2s linear infinite;
+        }
+        @keyframes float {
+            to { transform: translateY(-100px); opacity: 0; }
+        }
+        .hidden { display: none; }
+        .card {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="page1" class="container">
+        <h1>Will You Be My Girlfriend?</h1>
+        <p>I've been thinking about you a lot... What do you say?</p>
+        <button id="yesButton">Yes I do</button>
+        <button id="noButton">No, leave me alone</button>
+    </div>
+
+    <div id="page2" class="container hidden">
+        <h2>Let's Schedule Our First Date!</h2>
+        <label for="date">Pick a Date:</label>
+        <input type="date" id="date"><br>
+        <label for="time">Pick a Time:</label>
+        <input type="time" id="time"><br>
+        <p>Choose an Activity:</p>
+        <div class="image-option">
+            <input type="radio" id="beach" name="activity" value="Beach Day">
+            <label for="beach"><img src="https://via.placeholder.com/100x100/ff69b4/ffffff?text=Beach" alt="Beach"></label>
+        </div>
+        <div class="image-option">
+            <input type="radio" id="picnic" name="activity" value="Romantic Picnic">
+            <label for="picnic"><img src="https://via.placeholder.com/100x100/ff69b4/ffffff?text=Picnic" alt="Picnic"></label>
+        </div>
+        <div class="image-option">
+            <input type="radio" id="movie" name="activity" value="Movie Night">
+            <label for="movie"><img src="https://via.placeholder.com/100x100/ff69b4/ffffff?text=Movie" alt="Movie"></label>
+        </div>
+        <br>
+        <button id="continueButton">Continue</button>
+    </div>
+
+    <div id="page3" class="container hidden">
+        <h2>Our Date is Set!</h2>
+        <div class="card" id="dateCard">
+            <p id="dateSummary">Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Hearts trail animation
+        document.addEventListener('mousemove', function(e) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            heart.style.left = e.pageX + 'px';
+            heart.style.top = e.pageY + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2000);
+        });
+
+        // Page navigation
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const page3 = document.getElementById('page3');
+
+        document.getElementById('yesButton').addEventListener('click', () => {
+            page1.classList.add('hidden');
+            page2.classList.remove('hidden');
+        });
+
+        document.getElementById('noButton').addEventListener('mouseover', () => {
+            const button = document.getElementById('noButton');
+            const container = document.querySelector('.container');
+            const rect = container.getBoundingClientRect();
+            const x = Math.random() * (rect.width - button.offsetWidth) + rect.left;
+            const y = Math.random() * (rect.height - button.offsetHeight) + rect.top;
+            button.style.left = x + 'px';
+            button.style.top = y + 'px';
+        });
+
+        document.getElementById('continueButton').addEventListener('click', () => {
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const activity = document.querySelector('input[name="activity"]:checked')?.value || 'No activity selected';
+            document.getElementById('dateSummary').textContent = `Date: ${date || 'Not set'} at ${time || 'Not set'}. Activity: ${activity}. Can't wait! 💕`;
+            page2.classList.add('hidden');
+            page3.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
